@@ -15,6 +15,7 @@
 #import <PINRemoteImage/PINAnimatedImageView.h>
 #import <PINRemoteImage/PINRemoteImage.h>
 #import <PINRemoteImage/PINImageView+PINRemoteImage.h>
+#import "BFRImageViewController.h"
 
 @interface BFRImageContainerViewController () <UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
@@ -47,6 +48,8 @@
 
 /*! Currently, this only shows if a live photo is displayed to avoid gesture recognizer conflicts with playback and sharing. */
 @property (strong, nonatomic, nullable) UIBarButtonItem *shareBarButtonItem;
+
+@property (strong, nonatomic, nullable) UILabel * titleLb;
 
 @end
 
@@ -114,10 +117,37 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleHiResImageDownloaded:) name:NOTE_HI_RES_IMG_DOWNLOADED object:nil];
         self.imgLoaded = ((BFRBackLoadedImageSource *)self.imgSrc).image;
         [self addImageToScrollView];
+    } else if ([self.imgSrc isKindOfClass:[LocalImageObject class]]) {
+        self.assetType = BFRImageAssetTypeRemoteImage;
+        // Loading view
+        LocalImageObject *obj = (LocalImageObject *)self.imgSrc;
+        
+        NSURL *url = [NSURL URLWithString:obj.urlString];
+        self.imgSrc = url;
+        [self createProgressView];
+        [self retrieveImageFromURL];
+        
+        _titleLb = [UILabel new];
+        _titleLb.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
+        _titleLb.textColor = [UIColor whiteColor];
+        _titleLb.textAlignment = NSTextAlignmentCenter;
+        _titleLb.numberOfLines = 2;
+        _titleLb.text = obj.title;
+        [self.view addSubview:_titleLb];
+        
     } else {
         self.assetType = BFRImageAssetTypeUnknown;
         [self showError];
     }
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    BFRImageViewController *parent = (BFRImageViewController*)self.parentViewController.parentViewController;
+        
+    UIButton * doneButton = parent.doneButton;
+    //If we're the first view being presented, the done button may not have been added yet and so can be nil. If it's nil, we can then assume that it will be added in the default visible state.
+    [_titleLb setAlpha: doneButton != nil ? doneButton.alpha : 1.0f];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -143,6 +173,8 @@
     // Check for any NaNs, which should get corrected in the next drawing cycle
     BOOL isInvalidRect = (isnan(leftOffset) || isnan(topOffset) || isnan(newWidth) || isnan(newHeight));
     self.activeAssetView.frame = isInvalidRect ? self.view.bounds : newRect;
+    
+    [self.titleLb setFrame:CGRectMake(15 , self.view.frame.size.height * 0.8, self.view.frame.size.width - 30, self.view.frame.size.height * 0.2)];
 }
 
 - (void)dealloc {

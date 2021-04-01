@@ -42,6 +42,9 @@
 /*! Allows you to enable autoplay for peek&play feature on photo live view. Default to YES */
 @property (nonatomic, getter=shouldDisableAutoplayForLivePhoto) BOOL disableAutoplayForLivePhoto;
 
+/*! The button that sticks to the top left of the view that is responsible for dismissing this view controller. */
+@property (strong, nonatomic, nullable) UIButton *doneButton;
+
 /*! Dismiss properly with animations */
 - (void)dismiss;
 
@@ -53,5 +56,12 @@
 
 /*! Dismiss properly without custom animations and an optional completion handler  */
 - (void)dismissWithoutCustomAnimationWithCompletion:(void (^ __nullable)(void))completion;
+
+@end
+
+@interface LocalImageObject: NSObject
+
+@property(nonatomic, copy, nullable) NSString * urlString;
+@property(nonatomic, copy, nullable) NSString * title;
 
 @end

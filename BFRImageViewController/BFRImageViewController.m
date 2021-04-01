@@ -26,8 +26,7 @@
 /*! This will automatically hide the "Done" button after five seconds. */
 @property (strong, nonatomic, nullable) NSTimer *timerHideUI;
 
-/*! The button that sticks to the top left of the view that is responsible for dismissing this view controller. */
-@property (strong, nonatomic, nullable) UIButton *doneButton;
+
 
 /*! This will determine whether to change certain behaviors for 3D touch considerations based on its value. */
 @property (nonatomic, getter=isBeingUsedFor3DTouch) BOOL usedFor3DTouch;
@@ -358,5 +357,10 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+@end
+
+
+@implementation LocalImageObject
 
 @end
