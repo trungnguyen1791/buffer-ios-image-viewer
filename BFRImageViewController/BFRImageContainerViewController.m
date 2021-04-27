@@ -17,6 +17,20 @@
 #import <PINRemoteImage/PINImageView+PINRemoteImage.h>
 #import "BFRImageViewController.h"
 
+@interface InsetLabel : UILabel
+
+@end
+
+@implementation InsetLabel
+- (void)drawTextInRect:(CGRect)rect {
+    UIEdgeInsets inset = UIEdgeInsetsMake(10, 10, 10, 10);
+    [super drawTextInRect:UIEdgeInsetsInsetRect(rect, inset)];
+}
+
+@end
+
+
+
 @interface BFRImageContainerViewController () <UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
 /*! This is responsible for panning and zooming the images. */
@@ -49,7 +63,7 @@
 /*! Currently, this only shows if a live photo is displayed to avoid gesture recognizer conflicts with playback and sharing. */
 @property (strong, nonatomic, nullable) UIBarButtonItem *shareBarButtonItem;
 
-@property (strong, nonatomic, nullable) UILabel * titleLb;
+@property (strong, nonatomic, nullable) InsetLabel * titleLb;
 
 @end
 
@@ -127,11 +141,12 @@
         [self createProgressView];
         [self retrieveImageFromURL];
         
-        _titleLb = [UILabel new];
+        _titleLb = [InsetLabel new];
         _titleLb.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
         _titleLb.textColor = [UIColor whiteColor];
+        _titleLb.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.4];
         _titleLb.textAlignment = NSTextAlignmentCenter;
-        _titleLb.numberOfLines = 2;
+        _titleLb.numberOfLines = 3;
         _titleLb.text = obj.title;
         [self.view addSubview:_titleLb];
         
@@ -174,7 +189,7 @@
     BOOL isInvalidRect = (isnan(leftOffset) || isnan(topOffset) || isnan(newWidth) || isnan(newHeight));
     self.activeAssetView.frame = isInvalidRect ? self.view.bounds : newRect;
     
-    [self.titleLb setFrame:CGRectMake(15 , self.view.frame.size.height * 0.8, self.view.frame.size.width - 30, self.view.frame.size.height * 0.2)];
+    [self.titleLb setFrame:CGRectMake(0 , self.view.frame.size.height * 0.85, self.view.frame.size.width, self.view.frame.size.height * 0.15)];
 }
 
 - (void)dealloc {

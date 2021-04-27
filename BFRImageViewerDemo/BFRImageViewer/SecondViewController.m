@@ -38,10 +38,20 @@
         [self check3DTouch];
     }
     
-    NSURL *url1 = [NSURL URLWithString:@"https://open.buffer.com/wp-content/uploads/2017/04/career-framework-maker-manager.png"];
-    NSURL *url2 = [NSURL URLWithString:@"https://open.buffer.com/wp-content/uploads/2015/11/new-journey-page.png"];
+    NSURL *url1 = [NSURL URLWithString:@"https://enkei.com/wp-content/uploads/2015/01/GT7-Silver-lr.jpg"];
+    NSURL *url2 = [NSURL URLWithString:@"https://enkei.com/wp-content/uploads/2015/01/GT7-Black-LR.jpg"];
     NSURL *url3 = [NSURL URLWithString:@"http://i.imgur.com/XBnuETM.jpg"];
-    self.imgURLs = @[url1, url2, url3];
+//    self.imgURLs = @[url1, url2, url3];
+    
+    LocalImageObject *obj1 = [LocalImageObject new];
+    obj1.urlString = @"https://enkei.com/wp-content/uploads/2015/01/GT7-Silver-lr.jpg";
+    obj1.title = @"Image so 1 ";
+    
+    LocalImageObject *obj2 = [LocalImageObject new];
+    obj2.urlString = @"https://enkei.com/wp-content/uploads/2015/01/GT7-Black-LR.jpg";
+    obj2.title = @"2021-04-01 16:01:29.248783+0700 BFRImageViewer[4831:223011] [] nw_protocol_get_quic_image_block_invoke dlopen libquic failed";
+    
+    self.imgURLs = @[obj1, obj2];
 }
 
 - (void)openImage {
