@@ -45,6 +45,9 @@
 /*! The button that sticks to the top left of the view that is responsible for dismissing this view controller. */
 @property (strong, nonatomic, nullable) UIButton *doneButton;
 
+/*! Allows you to set image max scale */
+@property (nonatomic, assign) CGFloat maxScale;
+
 /*! Dismiss properly with animations */
 - (void)dismiss;
 

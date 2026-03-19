@@ -9,7 +9,7 @@
 #import "SecondViewController.h"
 #import "BFRImageViewController.h"
 
-@interface SecondViewController () <UIViewControllerPreviewingDelegate>
+@interface SecondViewController ()
 @property (strong, nonatomic) NSArray *imgURLs;
 @end
 
@@ -60,22 +60,4 @@
     [self presentViewController:imageVC animated:YES completion:nil];
 }
 
-#pragma mark - 3D Touch
-- (void)check3DTouch {
-    [self registerForPreviewingWithDelegate:self sourceView:self.view];
-}
-
-- (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location {
-    return [[BFRImageViewController alloc] initWithImageSource:self.imgURLs];
-}
-
-- (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit {
-    [self presentViewController:viewControllerToCommit animated:YES completion:nil];
-}
-
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
-    if ([self.traitCollection respondsToSelector:@selector(forceTouchCapability)] && self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
-        [self check3DTouch];
-    }
-}
 @end

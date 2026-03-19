@@ -185,6 +185,7 @@
         imgVC.disableSharingLongPress = self.shouldDisableSharingLongPress;
         imgVC.disableHorizontalDrag = (self.images.count > 1);
         imgVC.disableAutoplayForLivePhoto = self.shouldDisableAutoplayForLivePhoto;
+        imgVC.imageMaxScale = self.maxScale;
         [self.imageViewControllers addObject:imgVC];
     }
     
@@ -198,11 +199,11 @@
 
 - (void)addChromeToUI {
     if (self.enableDoneButton) {
-        NSBundle *bundle = [NSBundle bundleForClass:[BFRImageViewController class]];
-        NSString *imagePath = [bundle pathForResource:@"cross" ofType:@"png"];
-        UIImage *crossImage = [[UIImage alloc] initWithContentsOfFile:imagePath];
+        UIImageSymbolConfiguration *config = [UIImageSymbolConfiguration configurationWithWeight:UIImageSymbolWeightBold];
+        UIImage *crossImage = [UIImage systemImageNamed:@"xmark" withConfiguration:config];
 
         self.doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.doneButton.tintColor = [UIColor whiteColor];
         [self.doneButton setAccessibilityLabel:BFRImageViewerLocalizedStrings(@"imageViewController.closeButton.text", @"Close")];
         [self.doneButton setImage:crossImage forState:UIControlStateNormal];
         [self.doneButton addTarget:self action:@selector(handleDoneAction) forControlEvents:UIControlEventTouchUpInside];
